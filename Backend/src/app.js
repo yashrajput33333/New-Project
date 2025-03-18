@@ -5,7 +5,9 @@ import cookieParser from "cookie-parser"
 
 const app = express()
 
-const allowedOrigins = process.env.CORS_ORIGIN.split(",");
+const allowedOrigins = process.env.CORS_ORIGIN
+? process.env.CORS_ORIGIN.split(",")
+: ["http://localhost:5173"];
 
 app.use(
   cors({
@@ -32,5 +34,12 @@ import userRouter from "./routes/user.routes.js"
 app.use("/api/v1/users", userRouter)
 
 // http://localhost:8000/api/v1/users/register
+
+app.get('/',(req,res)=>{
+    res . send ( {
+    activeStatus : true,
+    error:false,
+    })    
+})
 
 export {app}
