@@ -279,6 +279,7 @@ const updateAccountDetails = asyncHandler(async(req, res) => {
     .status(200)
     .json(new ApiResponse(200, user, "Account details updated successfully"))
 })
+
 const updateUserAvatar = asyncHandler(async(req, res) => {
     const avatarLocalPath = req.file?.path
     if (!avatarLocalPath) {
@@ -471,41 +472,40 @@ const getUserPosts = asyncHandler(async (req, res) => {
 const createPost = asyncHandler(async (req, res) => {
     const { title, slug, content, status } = req.body;
     const owner = req.user._id;
-
+  
     if (!title || !slug || !content || !status) {
-        throw new ApiError(400, "All fields are required");
+      throw new ApiError(400, "All fields are required");
     }
-
+  
     let featuredImage = "";
     if (req.file) {
-        try {
-            const uploadResponse = await uploadOnCloudinary(req.file.path);
-            if (!uploadResponse || !uploadResponse.url) {
-                throw new ApiError(500, "Error uploading image");
-            }
-            featuredImage = uploadResponse.url;
-
-            // ✅ Check if file exists before trying to delete it
-            if (fs.existsSync(req.file.path)) {
-                fs.unlinkSync(req.file.path); // Remove temp file after successful upload
-            }
-        } catch (err) {
-            console.error("Error uploading image:", err);
-            throw new ApiError(500, "Image upload failed");
+      try {
+        // ✅ Upload file from buffer to Cloudinary
+        const uploadResponse = await uploadOnCloudinary(req.file.buffer, req.file.originalname);
+        if (!uploadResponse || !uploadResponse.url) {
+          throw new ApiError(500, "Error uploading image");
         }
+        featuredImage = uploadResponse.url;
+      } catch (err) {
+        console.error("Error uploading image:", err);
+        throw new ApiError(500, "Image upload failed");
+      }
     }
-
+  
     const post = await Post.create({
-        title,
-        slug,
-        content,
-        status,
-        owner,
-        featuredImage,
+      title,
+      slug,
+      content,
+      status,
+      owner,
+      featuredImage,
     });
-
-    return res.status(201).json(new ApiResponse(201, post, "Post created successfully"));
-});
+  
+    return res
+      .status(201)
+      .json(new ApiResponse(201, post, "Post created successfully"));
+  });
+  
 
 const updatePostBySlug = asyncHandler(async (req, res) => {
     const { slug } = req.params;
