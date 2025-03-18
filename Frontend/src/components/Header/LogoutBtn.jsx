@@ -24,7 +24,7 @@ import { Navigate, useNavigate } from 'react-router-dom'
       // .catch(error => console.error('Error:', error));
       
       try {
-        const response = await fetch("/api/v1/users/logout", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/logout`, {
               method: 'POST',
               credentials: 'include' 
           })

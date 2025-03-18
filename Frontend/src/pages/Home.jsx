@@ -11,11 +11,11 @@ function Home() {
     useEffect(() => {
         const fetchUserPosts = async () => {
             try {
-                const authRes = await axios.get("/api/v1/users/current-user", { withCredentials: true });
+                const authRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/current-user`, { withCredentials: true });
                 if (!authRes.data.success) throw new Error("Unauthorized: Please log in.");
 
                 setIsLoggedIn(true);
-                const res = await axios.get("/api/v1/users/my-posts", { withCredentials: true });
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/my-posts`, { withCredentials: true });
 
                 if (res.data.success) {
                     setPosts(res.data.data);

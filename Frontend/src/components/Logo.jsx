@@ -9,7 +9,7 @@ function Logo({ width = "100px" }) {
   useEffect(() => {
     const fetchUserAvatar = async () => {
       try {
-        const response = await axios.get("/api/v1/users/current-user", { withCredentials: true });
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/current-user`, { withCredentials: true });
         if (response.data.success) {
           setAvatar(response.data.data.avatar); // ✅ Set user avatar
         }

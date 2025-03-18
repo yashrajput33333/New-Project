@@ -16,7 +16,7 @@ function EditPost() {
         }
 
         axios
-            .get(`/api/v1/users/posts/slug/${slug}`)
+            .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/posts/slug/${slug}`)
             .then((res) => {
                 if (res.data.success) {
                     setPost(res.data.data);
@@ -35,7 +35,7 @@ function EditPost() {
     const handlePostUpdate = async (updatedPost) => {
         try {
             const response = await axios.put(
-                `/api/v1/users/posts/slug/${slug}`,
+                `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/posts/slug/${slug}`,
                 {
                     ...updatedPost,
                     status: updatedPost.status === "active", // ✅ Ensure correct boolean conversion
@@ -59,7 +59,7 @@ function EditPost() {
         if (!window.confirm("Are you sure you want to delete this post?")) return;
 
         try {
-            const response = await axios.delete(`/api/v1/users/posts/slug/${slug}`, {
+            const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/posts/slug/${slug}`, {
                 withCredentials: true,
             });
 

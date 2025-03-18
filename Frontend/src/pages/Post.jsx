@@ -18,7 +18,7 @@ export default function Post() {
             return;
         }
 
-        axios.get(`/api/v1/users/posts/slug/${slug}`)
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/posts/slug/${slug}`)
             .then((res) => {
                 if (res.data.success) setPost(res.data.data);
                 else navigate("/");
@@ -33,7 +33,7 @@ export default function Post() {
         if (!window.confirm("Are you sure you want to delete this post?")) return;
 
         try {
-            const res = await axios.delete(`/api/v1/users/posts/slug/${post.slug}`);
+            const res = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/posts/slug/${post.slug}`);
             if (res.data.success) navigate("/");
         } catch (error) {
             console.error("Error deleting post:", error);

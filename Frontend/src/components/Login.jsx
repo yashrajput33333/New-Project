@@ -15,7 +15,7 @@ function Login() {
         setError("");
 
         try {
-            const response = await fetch("/api/v1/users/login", {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,7 +30,7 @@ function Login() {
                 throw new Error(data.message || "Login failed");
             }
 
-            const userResponse = await fetch("/api/v1/users/current-user", {
+            const userResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/current-user`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

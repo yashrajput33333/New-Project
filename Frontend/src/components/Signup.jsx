@@ -30,7 +30,7 @@ function Signup() {
         formData.append("avatar", avatar);
       }
 
-      const response = await axios.post("/api/v1/users/register", formData, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/register`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
