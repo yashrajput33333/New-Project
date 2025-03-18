@@ -32,6 +32,7 @@ function Signup() {
 
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/register`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
       });
 
       if (response.data.data?.user) {
