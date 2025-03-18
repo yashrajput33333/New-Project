@@ -13,7 +13,7 @@ function AllPosts() {
 
     const fetchPosts = async () => {
         try {
-            const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/logout`);
+            const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/posts`);
             if (res.data.success) {
                 setPosts(res.data.data);
             }

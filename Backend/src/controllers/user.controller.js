@@ -211,7 +211,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     
         const options = {
             httpOnly: true,
-            secure: true
+            secure: process.env.NODE_ENV === "production", // Ensure cookies are secure in production
+            sameSite: "None", // Adjust as needed (Strict or Lax)
         }
     
         const {accessToken, newRefreshToken} = await generateAccessAndRefereshTokens(user._id)
