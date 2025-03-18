@@ -80,21 +80,19 @@ const registerUser = asyncHandler( async (req, res) => {
     }
   
     // 🔹 Generate JWT Token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    const {accessToken, refreshToken} = await generateAccessAndRefereshTokens(user._id)
   
-    // ✅ Send token in cookie for automatic login
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Secure cookie in production
-      sameSite: "None",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    const options = {
+        httpOnly: true,   // Prevent JavaScript access to cookies
+        secure: process.env.NODE_ENV === "production",  // Only use secure cookies in production
+        sameSite: "None"  // Required for cross-origin cookies
+    };
   
     return res
       .status(201)
-      .json(new ApiResponse(201, { user: createdUser, token }, "User registered successfully"));
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .json(new ApiResponse(201, { user: createdUser}, "User registered successfully"));
   });
 
 const loginUser = asyncHandler(async (req, res) =>{
