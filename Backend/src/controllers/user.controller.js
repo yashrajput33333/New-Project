@@ -157,30 +157,35 @@ const loginUser = asyncHandler(async (req, res) =>{
 
 })
 
-const logoutUser = asyncHandler(async(req, res) => {
+cconst logoutUser = asyncHandler(async (req, res) => {
+    // Update the user's document by unsetting the refreshToken
     await User.findByIdAndUpdate(
         req.user._id,
         {
             $unset: {
-                refreshToken: 1
-            }
+                refreshToken: 1,
+            },
         },
         {
-            new: true
+            new: true,
         }
-    )
+    );
 
-    const options = {
+    // Configure cookie options
+    const cookieOptions = {
         httpOnly: true,
-        secure: true
-    }
+        secure: process.env.NODE_ENV === "production", // Ensure cookies are secure in production
+        sameSite: "Strict", // Adjust as needed (Strict or Lax)
+    };
 
+    // Clear cookies and respond
     return res
-    .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
-    .json(new ApiResponse(200, {}, "User logged Out"))
-})
+        .status(200)
+        .clearCookie("accessToken", cookieOptions)
+        .clearCookie("refreshToken", cookieOptions)
+        .json(new ApiResponse(200, {}, "User logged out successfully"));
+});
+
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
