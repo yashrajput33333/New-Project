@@ -509,7 +509,7 @@ const createPost = asyncHandler(async (req, res) => {
   });
   
 
-const updatePostBySlug = asyncHandler(async (req, res) => {
+  const updatePostBySlug = asyncHandler(async (req, res) => {
     const { slug } = req.params;
 
     // 1. Find the post by slug
@@ -539,25 +539,30 @@ const updatePostBySlug = asyncHandler(async (req, res) => {
     // 6. Handle featured image update if a new file is uploaded
     if (req.file) {
         try {
-            // Upload new image to Cloudinary
-            const uploadResponse = await uploadOnCloudinary(req.file.path);
+            // Upload new image to Cloudinary directly from buffer
+            const uploadResponse = await uploadOnCloudinary(
+                req.file.buffer,
+                req.file.originalname
+            );
+
             if (!uploadResponse || !uploadResponse.url) {
                 throw new ApiError(500, "Failed to upload image");
             }
 
             // Delete the old image from Cloudinary (if it exists)
             if (post.featuredImage) {
-                // Implement a function to delete the old image from Cloudinary
-                // Example: await deleteFromCloudinary(post.featuredImage);
+                // Extract public_id from the existing Cloudinary URL
+                const publicId = post.featuredImage
+                    .split("/")
+                    .pop()
+                    .split(".")[0];
+
+                // Delete the old image from Cloudinary
+                await deleteFromCloudinary(publicId);
             }
 
             // Update the featuredImage URL
             post.featuredImage = uploadResponse.url;
-
-            // Delete the temporary file from the server
-            if (fs.existsSync(req.file.path)) {
-                fs.unlinkSync(req.file.path);
-            }
         } catch (error) {
             console.error("Error uploading image:", error);
             throw new ApiError(500, "Image upload failed");
@@ -572,6 +577,7 @@ const updatePostBySlug = asyncHandler(async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, post, "Post updated successfully"));
 });
+
 
 const getPostBySlug = asyncHandler(async (req, res) => {
     const { slug } = req.params;
