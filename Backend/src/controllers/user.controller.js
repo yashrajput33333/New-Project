@@ -175,7 +175,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // Ensure cookies are secure in production
-        sameSite: "Strict", // Adjust as needed (Strict or Lax)
+        sameSite: "None", // Adjust as needed (Strict or Lax)
     };
 
     // Clear cookies and respond
