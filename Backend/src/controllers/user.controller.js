@@ -157,7 +157,7 @@ const loginUser = asyncHandler(async (req, res) =>{
 
 })
 
-cconst logoutUser = asyncHandler(async (req, res) => {
+const logoutUser = asyncHandler(async (req, res) => {
     // Update the user's document by unsetting the refreshToken
     await User.findByIdAndUpdate(
         req.user._id,
