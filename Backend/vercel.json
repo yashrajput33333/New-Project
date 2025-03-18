@@ -1,5 +1,4 @@
 {
-    "version": 2,
     "builds": [
       {
         "src": "Backend/src/index.js",
@@ -8,14 +7,9 @@
     ],
     "routes": [
       {
-        "src": "/api/(.*)",
+        "src": "/(.*)",
         "dest": "Backend/src/index.js"
       }
-    ],
-    "env": {
-      "MONGODB_URI": "@MONGODB_URI",
-      "PORT": "3000",
-      "CORS_ORIGIN": "@CORS_ORIGIN"
-    }
+    ]
   }
   
