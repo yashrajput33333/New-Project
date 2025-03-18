@@ -9,9 +9,7 @@ export default function Post() {
     const [post, setPost] = useState(null);
     const { slug } = useParams();
     const navigate = useNavigate();
-
     const userData = useSelector((state) => state.auth.userData);
-
     const isAuthor = post && userData ? post.owner === userData._id : false;
 
     useEffect(() => {
@@ -43,34 +41,40 @@ export default function Post() {
     };
 
     return post ? (
-        <div className="py-8">
+        <div className="py-8 bg-gradient-to-b from-gray-500 to-black min-h-screen">
             <Container>
-                <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
+                {/* Post Title (Centered) */}
+                <div className="w-full text-center mb-6">
+                    <h1 className="text-3xl font-extrabold text-white">{post.title}</h1>
+                </div>
+
+                {/* Featured Image (Reduced Size) */}
+                <div className="w-full flex justify-center mb-6">
                     {post.featuredImage && (
                         <img
                             src={post.featuredImage}
                             alt={post.title || "Post image"}
-                            className="rounded-xl"
+                            className="rounded-xl max-h-96 w-full max-w-3xl object-cover transition-transform duration-300 hover:scale-105 shadow-lg"
                         />
                     )}
+                </div>
 
-                    {isAuthor && (
-                        <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.slug}`}>
-                                <Button bgColor="bg-green-500" className="mr-3">
-                                    Edit
-                                </Button>
-                            </Link>
-                            <Button bgColor="bg-red-500" onClick={deletePost}>
-                                Delete
+                {/* Edit & Delete Buttons for Author */}
+                {isAuthor && (
+                    <div className="flex justify-end max-w-3xl mx-auto mb-4">
+                        <Link to={`/edit-post/${post.slug}`}>
+                            <Button bgColor="bg-green-500" className="mr-3 px-4 py-2 text-sm">
+                                ✏ Edit
                             </Button>
-                        </div>
-                    )}
-                </div>
-                <div className="w-full mb-6">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
-                </div>
-                <div className="browser-css">
+                        </Link>
+                        <Button bgColor="bg-red-500" onClick={deletePost} className="px-4 py-2 text-sm">
+                            🗑 Delete
+                        </Button>
+                    </div>
+                )}
+
+                {/* Post Content (Left Aligned) */}
+                <div className="browser-css text-white leading-relaxed max-w-3xl mx-auto text-left">
                     {typeof post.content === "string" ? parse(post.content) : null}
                 </div>
             </Container>
