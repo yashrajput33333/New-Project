@@ -22,7 +22,7 @@ function Header() {
           {/* Logo */}
           <div>
             <Link to="/">
-              <Logo width="80px" />
+              <Logo width="50px" />
             </Link>
           </div>
 

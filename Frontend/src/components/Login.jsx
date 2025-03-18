@@ -115,17 +115,7 @@ function Login() {
                         </div>
                         
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input
-                                    id="remember-me"
-                                    name="remember-me"
-                                    type="checkbox"
-                                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded bg-gray-700 cursor-pointer"
-                                />
-                                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300 cursor-pointer">
-                                    Remember me
-                                </label>
-                            </div>
+                            
                             
                             <div className="text-sm">
                                 <Link to="/forgot-password" className="font-medium text-blue-400 hover:text-blue-300 transition-colors">
