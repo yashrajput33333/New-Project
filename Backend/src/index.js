@@ -13,4 +13,9 @@ connectDB()
     console.log("MONGO db connection failed ", err)
 })
 
-
+app.get('/',(req,res)=>{
+    res . send ( {
+    activeStatus : true,
+    error:false,
+    })    
+})
